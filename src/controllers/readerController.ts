@@ -57,11 +57,14 @@ export class ReaderController {
       const article = await articleService.getArticleById(id);
 
       // Track read asynchronously
-      analyticsService.trackRead(id, userId);
+      const trackResult = await analyticsService.trackRead(id, userId);
 
       res.json(formatResponse(
         'Article retrieved successfully',
-        article
+        {
+          ...article,
+          readTracked: trackResult.tracked
+        }
       ));
     } catch (error) {
       next(error);

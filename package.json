@@ -9,7 +9,10 @@
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "queue:worker": "ts-node src/jobs/analyticsProcessor.ts"
+    "queue:worker": "ts-node src/jobs/analyticsProcessor.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
@@ -29,10 +32,15 @@
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.25",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.33",
+    "@types/supertest": "^2.0.16",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "prisma": "^5.0.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
   }

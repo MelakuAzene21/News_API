@@ -1,8 +1,20 @@
 import prisma from '../config/database';
-import { analyticsQueue } from '../config/redis';
+import { analyticsQueue, redis } from '../config/redis';
 
 export class AnalyticsService {
   async trackRead(articleId: string, readerId?: string) {
+    // Check if user has read this article recently (within 60 seconds)
+    const recentReadKey = `recent-read:${readerId || 'guest'}:${articleId}`;
+    const recentRead = await redis.get(recentReadKey);
+    
+    if (recentRead) {
+      // User has read this article recently, don't create another ReadLog
+      return { tracked: false, reason: 'recent_read' };
+    }
+    
+    // Mark as recent read with 60 second expiry
+    await redis.setex(recentReadKey, 60, '1');
+    
     // Create read log asynchronously
     analyticsQueue.add('track-read', {
       articleId,
